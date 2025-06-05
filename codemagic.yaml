@@ -13,9 +13,18 @@ workflows:
 
       - name: Zip .app for Appetize.io
         script: |
-          mkdir -p build/ios/ipa
-          cd build/ios/iphonesimulator
-          zip -r ../../ipa/Runner.app.zip Runner.app
+          echo "📁 Contenido de build/ios/iphonesimulator:"
+          ls -la build/ios/iphonesimulator
 
+          if [ -d build/ios/iphonesimulator/Runner.app ]; then
+            mkdir -p build/ios/ipa
+            cd build/ios/iphonesimulator
+            zip -r ../../ipa/Runner.app.zip Runner.app
+            echo "✅ Runner.app.zip creado exitosamente."
+          else
+            echo "❌ Runner.app no encontrado. Fallo al compilar para simulador."
+            exit 1
+          fi
+    
     artifacts:
       - build/ios/ipa/Runner.app.zip
