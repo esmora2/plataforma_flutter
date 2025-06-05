@@ -25,6 +25,6 @@ workflows:
             echo "❌ Runner.app no encontrado. Fallo al compilar para simulador."
             exit 1
           fi
-    
+
     artifacts:
       - build/ios/ipa/Runner.app.zip
