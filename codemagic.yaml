@@ -14,13 +14,19 @@ workflows:
       - name: Inspect simulator build output and zip Runner.app
         script: |
           echo "📁 Explorando contenido en build/ios/iphonesimulator:"
-          if [ -d build/ios/iphonesimulator ]; then
-            ls -la build/ios/iphonesimulator
-          else
-            echo "❌ La carpeta iphonesimulator no existe."
-            exit 1
-          fi
+          ls -la build/ios/iphonesimulator
 
+          if [ -d build/ios/iphonesimulator/Runner.app ]; then
+            echo "✅ Runner.app encontrado. Procediendo a comprimir..."
+            mkdir -p build/ios/ipa
+            cd build/ios/iphonesimulator
+            zip -r ../../../build/ios/ipa/Runner.app.zip Runner.app
+            echo "✅ Runner.app.zip creado exitosamente."
+          else
+            echo "❌ Runner.app NO fue encontrado. Puede que el build haya fallado."
+            exit 1
+          fi    
+          
           if [ -d build/ios/iphonesimulator/Runner.app ]; then
             echo "✅ Runner.app encontrado. Procediendo a comprimir."
             mkdir -p build/ios/ipa
