@@ -11,18 +11,24 @@ workflows:
       - name: Build for iOS Simulator
         script: flutter build ios --simulator
 
-      - name: Zip .app for Appetize.io
+      - name: Inspect simulator build output and zip Runner.app
         script: |
-          echo "📁 Contenido de build/ios/iphonesimulator:"
-          ls -la build/ios/iphonesimulator
+          echo "📁 Explorando contenido en build/ios/iphonesimulator:"
+          if [ -d build/ios/iphonesimulator ]; then
+            ls -la build/ios/iphonesimulator
+          else
+            echo "❌ La carpeta iphonesimulator no existe."
+            exit 1
+          fi
 
           if [ -d build/ios/iphonesimulator/Runner.app ]; then
+            echo "✅ Runner.app encontrado. Procediendo a comprimir."
             mkdir -p build/ios/ipa
             cd build/ios/iphonesimulator
             zip -r ../../ipa/Runner.app.zip Runner.app
             echo "✅ Runner.app.zip creado exitosamente."
           else
-            echo "❌ Runner.app no encontrado. Fallo al compilar para simulador."
+            echo "❌ Runner.app NO fue encontrado. Puede que el build haya fallado."
             exit 1
           fi
 
